@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <title>Email Verification</title> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 50px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0069d9;
+        }
+
+        .result {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .result.valid {
+            color: green;
+        }
+
+        .result.invalid {
+            color: red;
+        }
+    </style>
+    <!-- templates/mail.html -->
+
+   
+
+    <!-- Add your mail page content here -->
+
+<body>
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <lottie-player src="https://assets6.lottiefiles.com/packages/lf20_qVyybKaLrI.json" background="transparent"
+        speed="1" style="width: 250px; height: 250px; margin-left: 35%;" loop autoplay></lottie-player>
+    <!-- <h1 style="margin-left: 35%;">Email Verification</h1> -->
+    <form action="/verify_email" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <input type="submit" value="Verify">
+    </form>
+    <div class="result" id="result" style="margin-left: 35%;"></div>
+
+    <script>
+        const form = document.querySelector('form');
+        const result = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            result.innerHTML = 'Verifying...';
+            const response = await fetch('/verify_email', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            const data = await response.json();
+            result.innerHTML = data.message;
+            if (data.valid) {
+                result.classList.remove('invalid');
+                result.classList.add('valid');
+            } else {
+                result.classList.remove('valid');
+                result.classList.add('invalid');
+            }
+        });
+    </script>
+</body>
+
+
+</head>
+
+
+</html>
